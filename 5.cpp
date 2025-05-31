@@ -79,7 +79,7 @@ int getValidN()
 
 double getValidE()
 {
-    double e;
+    double e = 0.0; // Инициализация переменной
     cout << "Введите значение e: ";
     cin >> e;
 
