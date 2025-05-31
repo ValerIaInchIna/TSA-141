@@ -1,10 +1,7 @@
-﻿#include <iostream>
+#include <iostream>
 #include <cmath>
 
 using namespace std;
-
-// Определение константы PI
-const double PI = 3.14159265358979323846;
 
 /**
  * @brief Считывает значение с клавиатуры с проверкой ввода
@@ -19,7 +16,7 @@ double getValue();
  * @param x3, y3 - координаты точки C
  * @return true, если точки на одной прямой, иначе false
  */
-bool areCollinear(double x1, double y1, double x2, double y2, double x3, double y3);
+bool areCollinear(const double x1, const double y1, const double x2, const double y2, const double x3, const double y3);
 
 /**
  * @brief Вычисляет угол B в градусах между AB и BC
@@ -28,7 +25,7 @@ bool areCollinear(double x1, double y1, double x2, double y2, double x3, double 
  * @param x3, y3 - координаты точки C
  * @return Угол B в градусах
  */
-double calculateAngleB(double x1, double y1, double x2, double y2, double x3, double y3);
+double calculateAngleB(const double x1, const double y1, const double x2, const double y2, const double x3, const double y3);
 
 /**
  * @brief Проверяет значение на корректность (больше нуля)
@@ -64,18 +61,18 @@ int main() {
 }
 
 double getValue() {
-    double value;
+    double value = 0.0;
     cin >> value;
     checkValue(value);
     return value;
 }
 
-bool areCollinear(double x1, double y1, double x2, double y2, double x3, double y3) {
+bool areCollinear(const double x1, const double y1, const double x2, const double y2, const double x3, const double y3) {
     // Проверка на коллинеарность с использованием площади треугольника
     return (y2 - y1) * (x3 - x2) == (y3 - y2) * (x2 - x1);
 }
 
-double calculateAngleB(double x1, double y1, double x2, double y2, double x3, double y3) {
+double calculateAngleB(const double x1, const double y1, const double x2, const double y2, const double x3, const double y3) {
     // Вектор AB
     double ABx = x2 - x1;
     double ABy = y2 - y1;
@@ -93,7 +90,7 @@ double calculateAngleB(double x1, double y1, double x2, double y2, double x3, do
     double angleRadian = acos(dotProduct / (magnitudeAB * magnitudeBC));
 
     // Перевод угла в градусы
-    return angleRadian * (180.0 / PI);
+    return angleRadian * (180.0 / 3.14159265358979323846);
 }
 
 void checkValue(double value) {
