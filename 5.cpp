@@ -37,8 +37,8 @@ int getValidN();
 double getValidE();
 
 /**
-*@brief Точка входа для программы
-*@return 0
+* @brief Точка входа для программы
+* @return 0
 */
 int main()
 {
@@ -64,7 +64,7 @@ int main()
 
 int getValidN()
 {
-    int n;
+    int n = 0; // Инициализация переменной
     cout << "Введите значение n: ";
     cin >> n;
 
