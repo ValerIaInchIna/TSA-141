@@ -47,9 +47,8 @@ int main()
     cout << "x | y" << endl;
     cout << "--------" << endl;
 
-    for (double x = startX; x <= endX; x += step)
+    for (double x = startX; x < endX + step; x += step)
     {
-        // Проверка на допустимость значения x для логарифма
         if (x <= 0)
         {
             cout << "Ошибка: логарифм не определен для x = " << x << endl;
@@ -65,7 +64,7 @@ int main()
 
 double getValue()
 {
-    double value;
+    double value = 0.0;
     cin >> value;
     if (cin.fail())
     {
@@ -82,14 +81,12 @@ double calculateFunction(const double x)
 
 double getPositiveStep()
 {
-    double step;
-    do {
-        cout << "Введите шаг: ";
-        step = getValue();
-        if (step <= 0)
-        {
-            cout << "Ошибка. Шаг должен быть положительным. Повторите ввод." << endl;
-        }
-    } while (step <= 0);
+    cout << "Введите шаг: ";
+    double step = getValue();
+    if (step <= 0)
+    {
+        cout << "Ошибка. Шаг должен быть положительным." << endl;
+        abort();
+    }
     return step;
 }
