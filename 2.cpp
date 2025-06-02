@@ -4,28 +4,16 @@
 using namespace std;
 
 /**
- * @brief Получает числовое значение от пользователя с проверкой ввода
- * @return Корректно введенное пользователем число типа double
- * @note При некорректном вводе запрашивает повторный ввод
+ * @brief Получает числовое значение от пользователя
+ * @return Введённое пользователем число типа double
+ * @note Не выполняет проверку корректности ввода (ввод должен быть корректным)
  */
 double getValue()
 {
-    double value = 0;
-    while (true)
-    {
-        cin >> value;
-        if (cin.fail())
-        {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Ошибка ввода. Пожалуйста, введите число: ";
-        }
-        else
-        {
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            return value;
-        }
-    }
+    double value;
+    cin >> value;
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    return value;
 }
 
 /**
@@ -59,7 +47,7 @@ double calculateDistance(const double x1, const double y1, const double x2, cons
  * @brief Главная функция программы
  * @details Программа запрашивает координаты двух точек на плоскости,
  *          вычисляет расстояние между ними и выводит результат.
- *          Реализована проверка корректности ввода координат.
+ *          Предполагается, что пользователь вводит корректные числа.
  * @return 0 при успешном выполнении программы
  */
 int main()
