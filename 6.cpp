@@ -2,6 +2,7 @@
 #include <iomanip>
 #include <ctime>
 #include <cstdlib>
+#include <limits>
 
 using namespace std;
 
@@ -32,7 +33,6 @@ void freeMatrix(int** matrix, const size_t rows);
  * @param rows Количество строк
  * @param cols Количество столбцов
  */
-
 void printMatrix(int** matrix, const size_t rows, const size_t cols);
 /**
  * @brief Заполняет матрицу случайными числами
@@ -42,7 +42,6 @@ void printMatrix(int** matrix, const size_t rows, const size_t cols);
  * @param min Минимальное значение
  * @param max Максимальное значение
  */
-
 void fillRandom(int** matrix, const size_t rows, const size_t cols, const int min, const int max);
 /**
  * @brief Заполняет матрицу значениями с клавиатуры
@@ -50,7 +49,6 @@ void fillRandom(int** matrix, const size_t rows, const size_t cols, const int mi
  * @param rows Количество строк
  * @param cols Количество столбцов
  */
-
 void fillManual(int** matrix, const size_t rows, const size_t cols);
 /**
  * @brief Создает копию матрицы
@@ -66,7 +64,6 @@ int** copyMatrix(int** matrix, const size_t rows, const size_t cols);
  * @param rows Количество строк
  * @param cols Количество столбцов
  */
-
 void replaceMaxWithZero(int** matrix, size_t rows, size_t cols);
 /**
  * @brief Вставляет строку из нулей перед строками, где первый элемент делится на 3
@@ -75,10 +72,28 @@ void replaceMaxWithZero(int** matrix, size_t rows, size_t cols);
  * @param cols Количество столбцов
  * @return Новая матрица с добавленными строками
  */
-
 int** insertZeroRows(int** matrix, size_t& rows, size_t cols);
+
+/**
+ * @brief Считывает значение с клавиатуры с проверкой ввода
+ * @return Введенное положительное целое число
+ */
+int getValue() {
+    int value;
+    while (true) {
+        cin >> value;
+        if (cin.fail() || value <= 0) {
+            cin.clear();
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Error: Invalid input. Enter a positive integer: ";
+        } else {
+            return value;
+        }
+    }
+}
+
 /** 
-    * @brief точка входа в программу 
+ * @brief Точка входа в программу 
  */
 int main() {
     size_t rows, cols;
@@ -86,23 +101,23 @@ int main() {
 
     // Ввод размеров матрицы
     cout << "Enter number of rows: ";
-    cin >> rows;
+    rows = getValue();
     cout << "Enter number of columns: ";
-    cin >> cols;
+    cols = getValue();
 
     // Создание матрицы
     int** matrix = createMatrix(rows, cols);
 
     // Выбор способа заполнения
     cout << "Choose input method:\n1. Random\n2. Manual\n> ";
-    cin >> choice;
+    choice = getValue();
 
     if (choice == RANDOM) {
         do {
             cout << "Enter min value: ";
-            cin >> min;
+            min = getValue();
             cout << "Enter max value: ";
-            cin >> max;
+            max = getValue();
             if (min >= max) {
                 cout << "Error: min must be less than max. Try again." << endl;
             }
@@ -123,18 +138,20 @@ int main() {
     printMatrix(matrixCopy, rows, cols);
 
     // Задание 2: Вставка строк нулей
-    size_t newRows = rows; // Сохраняем исходное количество строк
-    int** newMatrix = insertZeroRows(matrixCopy, newRows, cols);
+    size_t originalRows = rows; // Сохраняем исходное количество строк
+    int** newMatrix = insertZeroRows(matrixCopy, rows, cols);
     cout << "\nAfter inserting zero rows:\n";
-    printMatrix(newMatrix, newRows, cols);
+    printMatrix(newMatrix, rows, cols);
 
     // Освобождение памяти
-    freeMatrix(matrix, rows);
-    freeMatrix(matrixCopy, rows);
-    freeMatrix(newMatrix, newRows);
+    freeMatrix(matrix, originalRows);     // Используем сохраненное originalRows
+    freeMatrix(matrixCopy, originalRows); // Используем сохраненное originalRows
+    freeMatrix(newMatrix, rows);          // Используем измененный rows
 
     return 0;
 }
+
+// Реализации функций
 
 int** createMatrix(const size_t rows, const size_t cols) {
     int** matrix = new int*[rows];
@@ -143,7 +160,6 @@ int** createMatrix(const size_t rows, const size_t cols) {
     }
     return matrix;
 }
-
 
 void freeMatrix(int** matrix, const size_t rows) {
     for (size_t i = 0; i < rows; i++) {
@@ -161,7 +177,6 @@ void printMatrix(int** matrix, const size_t rows, const size_t cols) {
     }
 }
 
-
 void fillRandom(int** matrix, const size_t rows, const size_t cols, const int min, const int max) {
     srand(time(0));
     for (size_t i = 0; i < rows; i++) {
@@ -175,7 +190,7 @@ void fillManual(int** matrix, const size_t rows, const size_t cols) {
     for (size_t i = 0; i < rows; i++) {
         for (size_t j = 0; j < cols; j++) {
             cout << "matrix[" << i << "][" << j << "] = ";
-            cin >> matrix[i][j];
+            matrix[i][j] = getValue();
         }
     }
 }
@@ -190,13 +205,11 @@ int** copyMatrix(int** matrix, const size_t rows, const size_t cols) {
     return newMatrix;
 }
 
-
 void replaceMaxWithZero(int** matrix, size_t rows, size_t cols) {
     for (size_t i = 0; i < rows; i++) {
         int maxVal = matrix[i][0];
         size_t maxPos = 0;
         
-        // Находим максимальный элемент в строке
         for (size_t j = 1; j < cols; j++) {
             if (matrix[i][j] > maxVal) {
                 maxVal = matrix[i][j];
@@ -204,13 +217,11 @@ void replaceMaxWithZero(int** matrix, size_t rows, size_t cols) {
             }
         }
         
-        // Заменяем его на 0
         matrix[i][maxPos] = 0;
     }
 }
 
 int** insertZeroRows(int** matrix, size_t& rows, size_t cols) {
-    // Считаем сколько строк нужно добавить
     size_t addRows = 0;
     for (size_t i = 0; i < rows; i++) {
         if (matrix[i][0] % 3 == 0) {
@@ -218,18 +229,15 @@ int** insertZeroRows(int** matrix, size_t& rows, size_t cols) {
         }
     }
 
-    // Если нечего добавлять, возвращаем копию
     if (addRows == 0) {
         return copyMatrix(matrix, rows, cols);
     }
 
-    // Создаем новую матрицу с дополнительными строками
     size_t newRows = rows + addRows;
     int** newMatrix = createMatrix(newRows, cols);
 
     size_t newIdx = 0;
     for (size_t i = 0; i < rows; i++) {
-        // Если первый элемент делится на 3, добавляем строку нулей
         if (matrix[i][0] % 3 == 0) {
             for (size_t j = 0; j < cols; j++) {
                 newMatrix[newIdx][j] = 0;
@@ -237,13 +245,12 @@ int** insertZeroRows(int** matrix, size_t& rows, size_t cols) {
             newIdx++;
         }
 
-        // Копируем исходную строку
         for (size_t j = 0; j < cols; j++) {
             newMatrix[newIdx][j] = matrix[i][j];
         }
         newIdx++;
     }
 
-    rows = newRows; // Обновляем количество строк
+    rows = newRows;
     return newMatrix;
 }
