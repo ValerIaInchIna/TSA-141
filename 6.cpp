@@ -5,13 +5,19 @@
 
 using namespace std;
 
+// Перечисление для выбора способа заполнения
+enum InputMethod {
+    RANDOM = 1,
+    MANUAL = 2
+};
+
 /**
  * @brief Создает двумерный массив заданного размера
  * @param rows Количество строк
  * @param cols Количество столбцов
  * @return Указатель на созданный массив
  */
-int** createMatrix(const size_t rows,const size_t cols) {
+int** createMatrix(const size_t rows, const size_t cols) {
     int** matrix = new int*[rows];
     for (size_t i = 0; i < rows; i++) {
         matrix[i] = new int[cols];
@@ -37,7 +43,7 @@ void freeMatrix(int** matrix, const size_t rows) {
  * @param rows Количество строк
  * @param cols Количество столбцов
  */
-void printMatrix(int** matrix,  const size_t rows, const size_t cols) {
+void printMatrix(int** matrix, const size_t rows, const size_t cols) {
     for (size_t i = 0; i < rows; i++) {
         for (size_t j = 0; j < cols; j++) {
             cout << setw(5) << matrix[i][j];
@@ -54,7 +60,7 @@ void printMatrix(int** matrix,  const size_t rows, const size_t cols) {
  * @param min Минимальное значение
  * @param max Максимальное значение
  */
-void fillRandom(int** matrix, const size_t rows,  const size_t cols,  const int min, const int max) {
+void fillRandom(int** matrix, const size_t rows, const size_t cols, const int min, const int max) {
     srand(time(0));
     for (size_t i = 0; i < rows; i++) {
         for (size_t j = 0; j < cols; j++) {
@@ -76,6 +82,23 @@ void fillManual(int** matrix, const size_t rows, const size_t cols) {
             cin >> matrix[i][j];
         }
     }
+}
+
+/**
+ * @brief Создает копию матрицы
+ * @param matrix Указатель на матрицу
+ * @param rows Количество строк
+ * @param cols Количество столбцов
+ * @return Указатель на копию матрицы
+ */
+int** copyMatrix(int** matrix, const size_t rows, const size_t cols) {
+    int** newMatrix = createMatrix(rows, cols);
+    for (size_t i = 0; i < rows; i++) {
+        for (size_t j = 0; j < cols; j++) {
+            newMatrix[i][j] = matrix[i][j];
+        }
+    }
+    return newMatrix;
 }
 
 /**
@@ -120,13 +143,7 @@ int** insertZeroRows(int** matrix, size_t& rows, size_t cols) {
 
     // Если нечего добавлять, возвращаем копию
     if (addRows == 0) {
-        int** newMatrix = createMatrix(rows, cols);
-        for (size_t i = 0; i < rows; i++) {
-            for (size_t j = 0; j < cols; j++) {
-                newMatrix[i][j] = matrix[i][j];
-            }
-        }
-        return newMatrix;
+        return copyMatrix(matrix, rows, cols);
     }
 
     // Создаем новую матрицу с дополнительными строками
@@ -171,11 +188,16 @@ int main() {
     cout << "Choose input method:\n1. Random\n2. Manual\n> ";
     cin >> choice;
 
-    if (choice == 1) {
-        cout << "Enter min value: ";
-        cin >> min;
-        cout << "Enter max value: ";
-        cin >> max;
+    if (choice == RANDOM) {
+        do {
+            cout << "Enter min value: ";
+            cin >> min;
+            cout << "Enter max value: ";
+            cin >> max;
+            if (min >= max) {
+                cout << "Error: min must be less than max. Try again." << endl;
+            }
+        } while (min >= max);
         fillRandom(matrix, rows, cols, min, max);
     } else {
         fillManual(matrix, rows, cols);
@@ -185,19 +207,24 @@ int main() {
     cout << "\nOriginal matrix:\n";
     printMatrix(matrix, rows, cols);
 
+    // Создаем копию матрицы для изменений
+    int** matrixCopy = copyMatrix(matrix, rows, cols);
+
     // Задание 1: Замена максимальных элементов нулями
-    replaceMaxWithZero(matrix, rows, cols);
+    replaceMaxWithZero(matrixCopy, rows, cols);
     cout << "\nAfter replacing max elements with zeros:\n";
-    printMatrix(matrix, rows, cols);
+    printMatrix(matrixCopy, rows, cols);
 
     // Задание 2: Вставка строк нулей
-    int** newMatrix = insertZeroRows(matrix, rows, cols);
+    size_t newRows = rows; // Сохраняем исходное количество строк
+    int** newMatrix = insertZeroRows(matrixCopy, newRows, cols);
     cout << "\nAfter inserting zero rows:\n";
-    printMatrix(newMatrix, rows, cols);
+    printMatrix(newMatrix, newRows, cols);
 
     // Освобождение памяти
     freeMatrix(matrix, rows);
-    freeMatrix(newMatrix, rows);
+    freeMatrix(matrixCopy, rows);
+    freeMatrix(newMatrix, newRows);
 
     return 0;
 }
