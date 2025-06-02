@@ -11,7 +11,7 @@ using namespace std;
  * @param cols Количество столбцов
  * @return Указатель на созданный массив
  */
-int** createMatrix(size_t rows, size_t cols) {
+int** createMatrix(const size_t rows,const size_t cols) {
     int** matrix = new int*[rows];
     for (size_t i = 0; i < rows; i++) {
         matrix[i] = new int[cols];
@@ -24,7 +24,7 @@ int** createMatrix(size_t rows, size_t cols) {
  * @param matrix Указатель на матрицу
  * @param rows Количество строк в матрице
  */
-void freeMatrix(int** matrix, size_t rows) {
+void freeMatrix(int** matrix, const size_t rows) {
     for (size_t i = 0; i < rows; i++) {
         delete[] matrix[i];
     }
@@ -37,7 +37,7 @@ void freeMatrix(int** matrix, size_t rows) {
  * @param rows Количество строк
  * @param cols Количество столбцов
  */
-void printMatrix(int** matrix, size_t rows, size_t cols) {
+void printMatrix(int** matrix,  const size_t rows, const size_t cols) {
     for (size_t i = 0; i < rows; i++) {
         for (size_t j = 0; j < cols; j++) {
             cout << setw(5) << matrix[i][j];
@@ -54,7 +54,7 @@ void printMatrix(int** matrix, size_t rows, size_t cols) {
  * @param min Минимальное значение
  * @param max Максимальное значение
  */
-void fillRandom(int** matrix, size_t rows, size_t cols, int min, int max) {
+void fillRandom(int** matrix, const size_t rows,  const size_t cols,  const int min, const int max) {
     srand(time(0));
     for (size_t i = 0; i < rows; i++) {
         for (size_t j = 0; j < cols; j++) {
@@ -69,7 +69,7 @@ void fillRandom(int** matrix, size_t rows, size_t cols, int min, int max) {
  * @param rows Количество строк
  * @param cols Количество столбцов
  */
-void fillManual(int** matrix, size_t rows, size_t cols) {
+void fillManual(int** matrix, const size_t rows, const size_t cols) {
     for (size_t i = 0; i < rows; i++) {
         for (size_t j = 0; j < cols; j++) {
             cout << "matrix[" << i << "][" << j << "] = ";
