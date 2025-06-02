@@ -2,9 +2,21 @@
 #include <cmath>
 #include <limits> // Для numeric_limits
 using namespace std;
-
 // Прототипы функций
+/**
+ * @brief Получает числовое значение от пользователя
+ * @return Введённое пользователем число типа double
+ */
 double getValue();
+/**
+ * @brief Вычисляет расстояние между двумя точками на плоскости
+ * @param x1 Координата x первой точки
+ * @param y1 Координата y первой точки
+ * @param x2 Координата x второй точки
+ * @param y2 Координата y второй точки
+ * @return Расстояние между точками
+ * @note Использует формулу расстояния между точками: sqrt((x2-x1)² + (y2-y1)²)
+ */
 double calculateDistance(const double x1, const double y1, const double x2, const double y2);
 
 /**
@@ -34,10 +46,7 @@ int main()
     return 0;
 }
 
-/**
- * @brief Получает числовое значение от пользователя
- * @return Введённое пользователем число типа double
- */
+
 double getValue()
 {
     double value = 0.0;
@@ -46,15 +55,7 @@ double getValue()
     return value;
 }
 
-/**
- * @brief Вычисляет расстояние между двумя точками на плоскости
- * @param x1 Координата x первой точки
- * @param y1 Координата y первой точки
- * @param x2 Координата x второй точки
- * @param y2 Координата y второй точки
- * @return Расстояние между точками
- * @note Использует формулу расстояния между точками: sqrt((x2-x1)² + (y2-y1)²)
- */
+
 double calculateDistance(const double x1, const double y1, const double x2, const double y2)
 {
     return sqrt(pow(x2 - x1, 2) + pow(y2 - y1, 2));
