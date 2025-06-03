@@ -5,202 +5,201 @@
 using namespace std;
 
 /**
-  * @brief Считывает значение с клавиатуры с проверкой ввода
+ * @brief Считывает значение с клавиатуры с проверкой ввода
  * @return Введенное значение
  */
 int getValue();
 
 /**
- * @brief считывает рамер массива
- * @param n -размер массива
- * @return (size_t)n
+ * @brief Считывает размер массива
+ * @return Размер массива (size_t)
  */
 size_t getSize();
 
 /**
- *@brief проверка введённого размера массива
- *@param n-размер массива
+ * @brief Проверка введённого размера массива
+ * @param n - размер массива
  */
 void checkN(const int n);
 
 /**
- *@brief ввод элементов массива с клавиатуры
- * @param array[i]
+ * @brief Ввод элементов массива с клавиатуры
+ * @param array - массив
+ * @param n - размер массива
  */
 void fillArray(int* array, const int n);
+
 /**
- *@brief вывод массива в консоль
- * @param array[i]
+ * @brief Вывод массива в консоль
+ * @param array - массив
+ * @param n - размер массива
  */
 void printArray(const int* array, const int n);
+
 /**
- * @brief суммирует отрицательные элементы массива
- * @param array[i]<0
- */
-int sumOfNegativeElements(const int* array, const int n);
-/**
- * @brief сумма элементов значение которых не больше A
- * @param A-число введённое пользователем
- */
-int countPositiveLessThanA(const int* array, const int n, const int A);
-/**
- *@brief-вычисление номера последней пары соседних элементов с разными знаками
- *@param array[i]
- */
-int findLastPair(const int* array, const int n);
-/**
- *@brief-функция для заполнения массива случайными числами промежутка
+ * @brief Заполнение массива случайными числами в заданном интервале
+ * @param array - массив
+ * @param n - размер массива
+ * @param start - начало интервала
+ * @param end - конец интервала
  */
 void fillRandom(int* array, const size_t n, const int start, const int end);
 
+/**
+ * @brief Находит сумму отрицательных элементов, кратных 10
+ * @param array - массив
+ * @param n - размер массива
+ * @return Сумма элементов
+ */
+int sumOfNegativeElementsDivisibleBy10(const int* array, const int n);
 
 /**
- * @brief Точка входа в программу
- * @return возвращает 0, если программа выполнена верно
-*/
+ * @brief Заменяет первые k элементов массива на те же элементы в обратном порядке
+ * @param array - массив
+ * @param n - размер массива
+ * @param k - количество элементов для замены
+ */
+void reverseFirstKElements(int* array, const int n, const int k);
+
+/**
+ * @brief Проверяет, есть ли пара соседних элементов с произведением, равным заданному числу
+ * @param array - массив
+ * @param n - размер массива
+ * @param target - заданное число
+ * @return true, если такая пара существует, иначе false
+ */
+bool hasPairWithProduct(const int* array, const int n, const int target);
+
 int main() {
     setlocale(LC_ALL, "Rus");
     enum { RANDOM = 1, MANUAL = 2 };
-    cout << "Enter n: ";
+    cout << "Введите размер массива n: ";
     size_t n = getSize();
-    // Создаем массив
-    int* array = new int[n]; // Выделяем память для массива
-    cout << "Enter the way to fill array: " << (int)MANUAL <<
-        " to fill manually, " << (int)RANDOM << " to fill randomly: ";
+    int* array = new int[n];
+
+    cout << "Выберите способ заполнения массива: " << (int)MANUAL << " - вручную, " << (int)RANDOM << " - случайными числами: ";
     int choice = getValue();
     int start = 0;
     int end = 0;
 
     switch (choice) {
     case RANDOM:
-        cout << "Enter start: ";
+        cout << "Введите начало интервала: ";
         start = getValue();
-        cout << "Enter end: ";
+        cout << "Введите конец интервала: ";
         end = getValue();
-        if (start <= end)
-        {
-            abort();
+        if (start > end) {
+            cout << "Ошибка: начало интервала должно быть меньше или равно концу." << endl;
+            delete[] array;
+            return 1;
         }
-
-        fillRandom(array, n, start, end); // Заполняем массив случайными числами
+        fillRandom(array, n, start, end);
         break;
     case MANUAL:
-        fillArray(array, n); // Заполняем массив вручную
+        fillArray(array, n);
         break;
     default:
-        cout << "Error" << endl;
-        delete[] array; // Освобождаем память перед выходом
+        cout << "Ошибка: неверный выбор." << endl;
+        delete[] array;
         return 1;
     }
+
     printArray(array, n);
-    // 1. Найти сумму отрицательных элементов
-    int sumNegatives = sumOfNegativeElements(array, n);
-    cout << "Сумма отрицательных элементов: " << sumNegatives << endl;
-    // 2. Найти количество положительных элементов, не превосходящих A
-    cout << "Введите число A: ";
-    int A = getValue();
-    int countPositives = countPositiveLessThanA(array, n, A);
-    cout << "Количество положительных элементов, не превосходящих " << A << ": " << countPositives << endl;
-    // 3. Найти номер последней пары соседних элементов с разными знаками
-    int lastPairIndex = findLastPair(array, n);
-    if (lastPairIndex != -1) {
-        cout << "Номер последней пары соседних элементов с разными знаками: " << lastPairIndex + 1 << endl;
+
+    // 1. Найти сумму отрицательных элементов, кратных 10
+    int sumNegatives = sumOfNegativeElementsDivisibleBy10(array, n);
+    cout << "Сумма отрицательных элементов, кратных 10: " << sumNegatives << endl;
+
+    // 2. Заменить первые k элементов массива на те же элементы в обратном порядке
+    cout << "Введите количество элементов k для замены: ";
+    int k = getValue();
+    if (k > 0 && k <= n) {
+        reverseFirstKElements(array, n, k);
+        cout << "Массив после замены первых " << k << " элементов: ";
+        printArray(array, n);
+    } else {
+        cout << "Ошибка: неверное значение k." << endl;
     }
-    else {
-        cout << "Нет пар соседних элементов с разными знаками." << endl;
+
+    // 3. Проверить, есть ли пара соседних элементов с произведением, равным заданному числу
+    cout << "Введите заданное число для проверки произведения: ";
+    int target = getValue();
+    if (hasPairWithProduct(array, n, target)) {
+        cout << "Найдена пара соседних элементов с произведением " << target << "." << endl;
+    } else {
+        cout << "Пара соседних элементов с произведением " << target << " не найдена." << endl;
     }
+
+    delete[] array;
+    return 0;
 }
-int getValue()
-{
+
+int getValue() {
     int value = 0;
     cin >> value;
-    if (cin.fail())
-    {
-        cout << "Error" << endl;
+    if (cin.fail()) {
+        cout << "Ошибка ввода." << endl;
         abort();
     }
     return value;
 }
 
-size_t getSize()
-{
-    std::cout << "Введите размер массива" << endl;
+size_t getSize() {
     int n = getValue();
     checkN(n);
     return (size_t)n;
 }
-void checkN(const int n)
-{
-    if (n <= 0)
-    {
-        cout << "Error, некорректное значение" << endl;
+
+void checkN(const int n) {
+    if (n <= 0) {
+        cout << "Ошибка: размер массива должен быть положительным." << endl;
         abort();
     }
 }
-void fillArray(int* array, const int n)
-{
+
+void fillArray(int* array, const int n) {
     for (size_t i = 0; i < n; i++) {
-        cout << "Введите arr[" << i + 1 << "] = ";
+        cout << "Введите элемент массива [" << i + 1 << "]: ";
         array[i] = getValue();
     }
 }
-void fillArrayRandom(int* array, const int n, const int start, const int end)
-{
-    if (start < end) { abort(); }
-    for (size_t i = 0; i < n; i++) {
-        array[i] = rand() % (end - start + 1); // Генерация случайных чисел в диапазоне [-100; 200]
-    }
-}
-void printArray(const int* array, const int n)
-{
+
+void printArray(const int* array, const int n) {
     cout << "Массив: ";
-    for (size_t i = 0; i < n; i++)
-    {
+    for (size_t i = 0; i < n; i++) {
         cout << array[i] << " ";
     }
     cout << endl;
 }
-int sumOfNegativeElements(const int* array, const int n)
-{
+
+void fillRandom(int* array, const size_t n, const int start, const int end) {
+    srand(time(0));
+    for (size_t i = 0; i < n; i++) {
+        array[i] = rand() % (end - start + 1) + start;
+    }
+}
+
+int sumOfNegativeElementsDivisibleBy10(const int* array, const int n) {
     int sum = 0;
-    for (size_t i = 0; i < n; i++)
-    {
-        if (array[i] < 0)
-        {
+    for (size_t i = 0; i < n; i++) {
+        if (array[i] < 0 && array[i] % 10 == 0) {
             sum += array[i];
         }
     }
     return sum;
 }
-int countPositiveLessThanA(const int* array, const int n, const int A)
-{
-    int count = 0;
-    for (size_t i = 0; i < n; i++)
-    {
-        if (array[i] > 0 && array[i] <= A)
-        {
-            count++;
-        }
-    }
-    return count;
-}
-int findLastPair(const int* array, const int n)
-{
-    for (int i = n - 2; i >= 0; i--)
-    {
-        if ((array[i] < 0 && array[i + 1] >= 0) || (array[i] >= 0 && array[i + 1] < 0))
-        {
-            return i; // Возвращаем индекс первого элемента пары
-        }
-    }
-    return -1; // Если не нашли
-}
-void fillRandom(int* array, const size_t n, const int start, const int end)
-{
-    srand(time(0));
-    for (size_t i = 0; i < n; i++)
-    {
 
-        array[i] = rand() % (end - start + 1) + start;
+void reverseFirstKElements(int* array, const int n, const int k) {
+    for (int i = 0; i < k / 2; i++) {
+        swap(array[i], array[k - 1 - i]);
     }
 }
+
+bool hasPairWithProduct(const int* array, const int n, const int target) {
+    for (size_t i = 0; i < n - 1; i++) {
+        if (array[i] * array[i + 1] == target) {
+            return true;
+        }
+    }
+    return false;
+} 
