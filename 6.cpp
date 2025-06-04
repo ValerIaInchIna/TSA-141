@@ -6,13 +6,10 @@
 
 using namespace std;
 
-// Перечисление для выбора способа заполнения
 enum InputMethod {
     RANDOM = 1,
     MANUAL = 2
 };
-
-// Прототипы функций
 
 /**
  * @brief Создает двумерный массив заданного размера
@@ -99,16 +96,14 @@ int main() {
     size_t rows, cols;
     int choice, min, max;
 
-    // Ввод размеров матрицы
+
     cout << "Enter number of rows: ";
     rows = getValue();
     cout << "Enter number of columns: ";
     cols = getValue();
 
-    // Создание матрицы
     int** matrix = createMatrix(rows, cols);
 
-    // Выбор способа заполнения
     cout << "Choose input method:\n1. Random\n2. Manual\n> ";
     choice = getValue();
 
@@ -132,26 +127,23 @@ int main() {
 
     int** matrixCopy = copyMatrix(matrix, rows, cols);
 
-    // Задание 1: Замена максимальных элементов нулями
     replaceMaxWithZero(matrixCopy, rows, cols);
     cout << "\nAfter replacing max elements with zeros:\n";
     printMatrix(matrixCopy, rows, cols);
 
-    // Задание 2: Вставка строк нулей
-    size_t originalRows = rows; // Сохраняем исходное количество строк
+    size_t originalRows = rows;
     int** newMatrix = insertZeroRows(matrixCopy, rows, cols);
     cout << "\nAfter inserting zero rows:\n";
     printMatrix(newMatrix, rows, cols);
 
     // Освобождение памяти
-    freeMatrix(matrix, originalRows);     // Используем сохраненное originalRows
-    freeMatrix(matrixCopy, originalRows); // Используем сохраненное originalRows
-    freeMatrix(newMatrix, rows);          // Используем измененный rows
+    freeMatrix(matrix, originalRows);     
+    freeMatrix(matrixCopy, originalRows); 
+    freeMatrix(newMatrix, rows);          
 
     return 0;
 }
 
-// Реализации функций
 
 int** createMatrix(const size_t rows, const size_t cols) {
     int** matrix = new int*[rows];
