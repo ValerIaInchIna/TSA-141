@@ -202,3 +202,4 @@ bool hasPairWithProduct(const int* array, const int n, const int target) {
         }
     }
     return false;
+} // Добавлена закрывающая скобка для функции hasPairWithProduct
