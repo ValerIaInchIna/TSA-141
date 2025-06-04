@@ -106,11 +106,9 @@ int main() {
 
     printArray(array, n);
 
-    // 1. Найти сумму отрицательных элементов, кратных 10
     int sumNegatives = sumOfNegativeElementsDivisibleBy10(array, n);
     cout << "Сумма отрицательных элементов, кратных 10: " << sumNegatives << endl;
 
-    // 2. Заменить первые k элементов массива на те же элементы в обратном порядке
     cout << "Введите количество элементов k для замены: ";
     int k = getValue();
     if (k > 0 && k <= n) {
@@ -121,7 +119,6 @@ int main() {
         cout << "Ошибка: неверное значение k." << endl;
     }
 
-    // 3. Проверить, есть ли пара соседних элементов с произведением, равным заданному числу
     cout << "Введите заданное число для проверки произведения: ";
     int target = getValue();
     if (hasPairWithProduct(array, n, target)) {
@@ -202,4 +199,4 @@ bool hasPairWithProduct(const int* array, const int n, const int target) {
         }
     }
     return false;
-} // Добавлена закрывающая скобка для функции hasPairWithProduct
+} 
