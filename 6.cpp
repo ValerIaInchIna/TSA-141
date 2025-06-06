@@ -70,56 +70,46 @@ void replaceMaxWithZero(int** matrix, size_t rows, size_t cols);
  * @return Новая матрица с добавленными строками
  */
 int** insertZeroRows(int** matrix, size_t& rows, size_t cols);
-
 /**
  * @brief Считывает значение с клавиатуры с проверкой ввода
- * @return Введенное положительное целое число
+ * @return Введенное целое число
  */
-int getValue() {
-    int value;
-    while (true) {
-        cin >> value;
-        if (cin.fail() || value <= 0) {
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            cout << "Error: Invalid input. Enter a positive integer: ";
-        } else {
-            return value;
-        }
-    }
-}
+int getValue();
+/**
+ * @brief Проверяет, что число положительное
+ * @param n Число для проверки
+ */
+void checkPositive(const int n);
+/**
+ * @brief Получает размер (положительное число) с клавиатуры
+ * @return Введенное положительное число
+ */
+size_t getSize();
 
-/** 
- * @brief Точка входа в программу 
- */
 int main() {
-    size_t rows, cols;
-    int choice, min, max;
-
-
     cout << "Enter number of rows: ";
-    rows = getValue();
+    size_t rows = getSize();
     cout << "Enter number of columns: ";
-    cols = getValue();
+    size_t cols = getSize();
 
     int** matrix = createMatrix(rows, cols);
 
     cout << "Choose input method:\n1. Random\n2. Manual\n> ";
-    choice = getValue();
+    int choice = getValue();
+    int min = 0, max = 0;
 
     if (choice == RANDOM) {
-        do {
-            cout << "Enter min value: ";
-            min = getValue();
-            cout << "Enter max value: ";
-            max = getValue();
-            if (min >= max) {
-                cout << "Error: min must be less than max. Try again." << endl;
-            }
-        } while (min >= max);
+        cout << "Enter min value: ";
+        min = getValue();
+        cout << "Enter max value: ";
+        max = getValue();
         fillRandom(matrix, rows, cols, min, max);
-    } else {
+    } else if (choice == MANUAL) {
         fillManual(matrix, rows, cols);
+    } else {
+        cout << "Error" << endl;
+        freeMatrix(matrix, rows);
+        return 1;
     }
 
     cout << "\nOriginal matrix:\n";
@@ -136,14 +126,35 @@ int main() {
     cout << "\nAfter inserting zero rows:\n";
     printMatrix(newMatrix, rows, cols);
 
-    // Освобождение памяти
-    freeMatrix(matrix, originalRows);     
-    freeMatrix(matrixCopy, originalRows); 
-    freeMatrix(newMatrix, rows);          
+    freeMatrix(matrix, originalRows);
+    freeMatrix(matrixCopy, originalRows);
+    freeMatrix(newMatrix, rows);
 
     return 0;
 }
 
+int getValue() {
+    int value = 0;
+    cin >> value;
+    if (cin.fail()) {
+        cout << "Error" << endl;
+        abort();
+    }
+    return value;
+}
+
+void checkPositive(const int n) {
+    if (n <= 0) {
+        cout << "Error" << endl;
+        abort();
+    }
+}
+
+size_t getSize() {
+    int n = getValue();
+    checkPositive(n);
+    return (size_t)n;
+}
 
 int** createMatrix(const size_t rows, const size_t cols) {
     int** matrix = new int*[rows];
