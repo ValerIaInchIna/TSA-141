@@ -5,6 +5,17 @@
 using namespace std;
 
 /**
+ * @file array_operations.cpp
+ * @brief Программа для выполнения операций с массивом: заполнение, вывод, обработка
+ * @details 
+ * Программа позволяет:
+ * - Заполнять массив вручную или случайными числами
+ * - Находить сумму отрицательных элементов, кратных 10
+ * - Реверсировать первые k элементов массива (с сохранением оригинала)
+ * - Проверять наличие пары соседних элементов с заданным произведением
+ */
+
+/**
  * @brief Считывает значение с клавиатуры с проверкой ввода
  * @return Введенное значение
  */
@@ -70,17 +81,25 @@ void reverseFirstKElements(int* array, const int n, const int k);
  */
 bool hasPairWithProduct(const int* array, const int n, const int target);
 
+/**
+ * @brief Создает копию массива
+ * @param arr - исходный массив
+ * @param n - размер массива
+ * @return Указатель на новый массив-копию
+ */
+int* copyArray(int* arr, const int n);
+
 int main() {
     setlocale(LC_ALL, "Rus");
     enum { RANDOM = 1, MANUAL = 2 };
+    
     cout << "Введите размер массива n: ";
     size_t n = getSize();
     int* array = new int[n];
 
     cout << "Выберите способ заполнения массива: " << (int)MANUAL << " - вручную, " << (int)RANDOM << " - случайными числами: ";
     int choice = getValue();
-    int start = 0;
-    int end = 0;
+    int start = 0, end = 0;
 
     switch (choice) {
     case RANDOM:
@@ -109,15 +128,19 @@ int main() {
     int sumNegatives = sumOfNegativeElementsDivisibleBy10(array, n);
     cout << "Сумма отрицательных элементов, кратных 10: " << sumNegatives << endl;
 
+    // Создаем копию для операции реверса
+    int* reversedArray = copyArray(array, n);
+    
     cout << "Введите количество элементов k для замены: ";
     int k = getValue();
     if (k > 0 && k <= n) {
-        reverseFirstKElements(array, n, k);
+        reverseFirstKElements(reversedArray, n, k);
         cout << "Массив после замены первых " << k << " элементов: ";
-        printArray(array, n);
+        printArray(reversedArray, n);
     } else {
         cout << "Ошибка: неверное значение k." << endl;
     }
+    delete[] reversedArray;
 
     cout << "Введите заданное число для проверки произведения: ";
     int target = getValue();
@@ -199,4 +222,12 @@ bool hasPairWithProduct(const int* array, const int n, const int target) {
         }
     }
     return false;
-} 
+}
+
+int* copyArray(int* arr, const int n) {
+    int* newArray = new int[n];
+    for (size_t i = 0; i < n; i++) {
+        newArray[i] = arr[i];
+    }
+    return newArray;
+}
