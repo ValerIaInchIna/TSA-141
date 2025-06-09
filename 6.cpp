@@ -68,13 +68,22 @@ int** copyMatrix(int** matrix, const size_t rows, const size_t cols);
 void replaceMaxWithZero(int** matrix, size_t rows, size_t cols);
 
 /**
+ * @brief Подсчитывает количество строк, которые нужно добавить
+ * @param matrix Исходная матрица
+ * @param rows Количество строк
+ * @param cols Количество столбцов
+ * @return Количество строк для добавления
+ */
+size_t countRowsToAdd(int** matrix, size_t rows, size_t cols);
+
+/**
  * @brief Вставляет строку из нулей перед строками, где первый элемент делится на 3
  * @param matrix Исходная матрица
- * @param rows Ссылка на количество строк (изменяется при вставке)
+ * @param rows Количество строк
  * @param cols Количество столбцов
  * @return Новая матрица с добавленными строками
  */
-int** insertZeroRows(int** matrix, size_t& rows, size_t cols);
+int** insertZeroRows(int** matrix, size_t rows, size_t cols);
 
 /**
  * @brief Считывает значение с клавиатуры с проверкой ввода
@@ -120,7 +129,6 @@ int main() {
         default:        cout << "Ошибка" << endl;
                         freeMatrix(matrix, rows);
                         return 1;
-                        break;
     }
 
     cout << "\nИсходная матрица:\n";
@@ -132,14 +140,14 @@ int main() {
     cout << "\nПосле замены максимальных элементов на нули:\n";
     printMatrix(matrixCopy, rows, cols);
 
-    size_t originalRows = rows;
+    size_t addRows = countRowsToAdd(matrixCopy, rows, cols);
     int** newMatrix = insertZeroRows(matrixCopy, rows, cols);
     cout << "\nПосле добавления строк из нулей:\n";
-    printMatrix(newMatrix, rows, cols);
+    printMatrix(newMatrix, rows + addRows, cols);
 
-    freeMatrix(matrix, originalRows);
-    freeMatrix(matrixCopy, originalRows);
-    freeMatrix(newMatrix, rows);
+    freeMatrix(matrix, rows);
+    freeMatrix(matrixCopy, rows);
+    freeMatrix(newMatrix, rows + addRows);
 
     return 0;
 }
@@ -212,13 +220,18 @@ void replaceMaxWithZero(int** matrix, size_t rows, size_t cols) {
     }
 }
 
-int** insertZeroRows(int** matrix, size_t& rows, size_t cols) {
+size_t countRowsToAdd(int** matrix, size_t rows, size_t cols) {
     size_t addRows = 0;
     for (size_t i = 0; i < rows; i++) {
         if (matrix[i][0] % 3 == 0) {
             addRows++;
         }
     }
+    return addRows;
+}
+
+int** insertZeroRows(int** matrix, size_t rows, size_t cols) {
+    size_t addRows = countRowsToAdd(matrix, rows, cols);
 
     if (addRows == 0) {
         return copyMatrix(matrix, rows, cols);
@@ -242,7 +255,6 @@ int** insertZeroRows(int** matrix, size_t& rows, size_t cols) {
         newIdx++;
     }
 
-    rows = newRows;
     return newMatrix;
 }
 
