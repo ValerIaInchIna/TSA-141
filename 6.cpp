@@ -61,7 +61,7 @@ int** copyMatrix(int** matrix, const size_t rows, const size_t cols);
  * @param rows Количество строк
  * @param cols Количество столбцов
  */
-void replaceMaxWithZero(int** matrix, size_t rows, size_t cols);
+void replaceMaxWithZero(int** matrix, const size_t rows, const size_t cols);
 
 /**
  * @brief Подсчитывает количество строк, где первый элемент делится на 3
@@ -70,7 +70,7 @@ void replaceMaxWithZero(int** matrix, size_t rows, size_t cols);
  * @param cols Количество столбцов
  * @return Количество строк для вставки
  */
-size_t countRowsToInsert(int** matrix, size_t rows, size_t cols);
+size_t countRowsToInsert(int** matrix, const size_t rows, const  size_t cols);
 
 /**
  * @brief Вставляет строку из нулей перед строками, где первый элемент делится на 3
@@ -80,7 +80,7 @@ size_t countRowsToInsert(int** matrix, size_t rows, size_t cols);
  * @param addRows Количество строк для вставки
  * @return Новая матрица с добавленными строками
  */
-int** insertZeroRows(int** matrix, size_t rows, size_t cols, size_t addRows);
+int** insertZeroRows(int** matrix, const size_t rows, const  size_t cols, const  size_t addRows);
 
 /**
  * @brief Считывает значение с клавиатуры с проверкой ввода
