@@ -73,7 +73,7 @@ void replaceMaxWithZero(int** matrix, const size_t rows, const size_t cols);
  * @param cols Количество столбцов
  * @return Количество строк для вставки
  */
-size_t countRowsToInsert(int** matrix, const size_t rows, const  size_t cols);
+size_t countRowsToInsert(int** matrix, const size_t rows, const size_t cols);
 
 /**
  * @brief Вставляет строку из нулей перед строками, где первый элемент делится на 3
@@ -83,7 +83,7 @@ size_t countRowsToInsert(int** matrix, const size_t rows, const  size_t cols);
  * @param addRows Количество строк для вставки
  * @return Новая матрица с добавленными строками
  */
-int** insertZeroRows(int** matrix, const size_t rows, const  size_t cols, const  size_t addRows);
+int** insertZeroRows(int** matrix, const size_t rows, const size_t cols, const size_t addRows);
 
 /**
  * @brief Считывает значение с клавиатуры с проверкой ввода
@@ -102,22 +102,20 @@ void checkPositive(const int n);
  * @return Введенное положительное число
  */
 size_t getSize();
+
 /**
  * @brief Главная функция программы
  * 
  * Программа выполняет следующие действия:
- * 1. Запрашивает у пользователя размеры матрицы (количество строк и столбцов)
- * 2. Предлагает выбор способа заполнения матрицы (случайными числами или вручную)
- * 3. Выводит исходную матрицу на экран
- * 4. Создает копию матрицы и заменяет в ней максимальные элементы каждой строки нулями
- * 5. Выводит измененную матрицу
- * 6. Вставляет строки из нулей перед строками, где первый элемент делится на 3
- * 7. Выводит итоговую матрицу
- * 8. Освобождает выделенную память
+ * 1. Запрашивает у пользователя размеры матрицы
+ * 2. Предлагает выбор способа заполнения матрицы
+ * 3. Выводит исходную матрицу
+ * 4. Заменяет максимальные элементы строк нулями
+ * 5. Вставляет строки из нулей перед определенными строками
+ * 6. Освобождает выделенную память
  * 
- * @return int Код завершения программы (0 - успешное выполнение, 1 - ошибка)
+ * @return int Код завершения программы
  */
-
 int main() {
     setlocale(LC_ALL, "Rus");
     
@@ -144,7 +142,6 @@ int main() {
         default:        cout << "Ошибка" << endl;
                         freeMatrix(matrix, rows);
                         return 1;
-                        break;
     }
 
     cout << "\nИсходная матрица:\n";
@@ -224,7 +221,7 @@ int** copyMatrix(int** matrix, const size_t rows, const size_t cols) {
     return newMatrix;
 }
 
-void replaceMaxWithZero(int** matrix, size_t rows, size_t cols) {
+void replaceMaxWithZero(int** matrix, const size_t rows, const size_t cols) {
     for (size_t i = 0; i < rows; i++) {
         int maxVal = matrix[i][0];
         size_t maxPos = 0;
@@ -240,7 +237,7 @@ void replaceMaxWithZero(int** matrix, size_t rows, size_t cols) {
     }
 }
 
-size_t countRowsToInsert(int** matrix, size_t rows, size_t cols) {
+size_t countRowsToInsert(int** matrix, const size_t rows, const size_t cols) {
     size_t addRows = 0;
     for (size_t i = 0; i < rows; i++) {
         if (matrix[i][0] % 3 == 0) {
@@ -250,7 +247,7 @@ size_t countRowsToInsert(int** matrix, size_t rows, size_t cols) {
     return addRows;
 }
 
-int** insertZeroRows(int** matrix, size_t rows, size_t cols, size_t addRows) {
+int** insertZeroRows(int** matrix, const size_t rows, const size_t cols, const size_t addRows) {
     size_t newRows = rows + addRows;
     int** newMatrix = createMatrix(newRows, cols);
 
