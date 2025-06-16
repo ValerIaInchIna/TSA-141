@@ -5,10 +5,6 @@
 #include <limits>
 #include <clocale>
 
-using namespace std;
-
-enum {RANDOM = 1, MANUAL = 2};
-
 /**
  * @brief Создает двумерный массив заданного размера
  * @param rows Количество строк
@@ -103,6 +99,10 @@ void checkPositive(const int n);
  * @return Введенное положительное число
  */
 size_t getSize();
+
+using namespace std;
+
+enum {RANDOM = 1, MANUAL = 2};
 
 int main() {
     setlocale(LC_ALL, "Rus");
